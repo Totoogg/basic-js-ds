@@ -1,6 +1,6 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { Node } = require('../extensions/list-tree.js');
+const { Node } = require('../extensions/list-tree.js');
 
 /**
 * Implement simple binary search tree according to task description
@@ -8,39 +8,91 @@ const { NotImplementedError } = require('../extensions/index.js');
 */
 class BinarySearchTree {
 
+  constructor() {
+    this.rootTree = null
+  }
+
   root() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return this.rootTree
   }
 
-  add(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  add(data) {
+    this.rootTree = addData(this.rootTree, data)
+    function addData(list, data) {
+      if (!list) return new Node(data)
+      if (list.data === data) return list
+      if (list.data > data) list.left = addData(list.left, data)
+      if (list.data < data) list.right = addData(list.right, data)
+      return list
+    }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  has(data) {
+    return hasData(this.rootTree, data)
+    function hasData(list, data) {
+      if (!list) return false
+      if (list.data === data) return true
+      if (list.data > data) return hasData(list.left, data)
+      if (list.data < data) return hasData(list.right, data)
+    }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    return findData(this.rootTree, data)
+    function findData(list, data) {
+      if (!list) return null
+      if (list.data === data) return list
+      return list.data > data ? findData(list.left, data) : findData(list.right, data)
+    }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    this.rootTree = removeData(this.rootTree, data)
+    function removeData(list, data) {
+      if (!list) return null
+      if (list.data > data) {
+        list.left = removeData(list.left, data)
+        return list
+      }
+      if (list.data < data) {
+        list.right = removeData(list.right, data)
+        return list
+      }
+      if (list.data === data) {
+        if (!list.left && !list.right) return null
+        if (!list.left) {
+          list = list.right
+          return list
+        }
+        if (!list.right) {
+          list = list.right
+          return list
+        }
+        let maxFromLeft = list.left
+        while (maxFromLeft.right) {
+          maxFromLeft = maxFromLeft.right
+        }
+        list.data = maxFromLeft.data
+        list.left = removeData(list.left, maxFromLeft.data)
+        return list
+      }
+    }
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    let minData = this.rootTree
+    while (minData.left) {
+      minData = minData.left
+    }
+    return minData.data
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    let maxData = this.rootTree
+    while (maxData.right) {
+      maxData = maxData.right
+    }
+    return maxData.data
   }
 }
 

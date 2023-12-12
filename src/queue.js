@@ -1,6 +1,6 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { ListNode } = require('../extensions/list-node.js');
+const { ListNode } = require('../extensions/list-node.js');
 
 /**
  * Implement the Queue with a given interface via linked list (use ListNode extension above).
@@ -15,19 +15,34 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 class Queue {
 
-  getUnderlyingList() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor() {
+    this.list = null
   }
 
-  enqueue(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  getUnderlyingList() {
+    return this.list
+  }
+
+  enqueue(value) {
+    this.list = addValue(this.list, value)
+    function addValue(node, value) {
+      if (!node) return new ListNode(value)
+      if (node.value === value) return node
+      node.next = addValue(node.next, value)
+      return node
+    }
   }
 
   dequeue() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    let first = null
+    this.list = dequeueValue(this.list)
+    return first
+    function dequeueValue(node) {
+      if (!node) return null
+      first = node.value
+      node = node.next
+      return node
+    }
   }
 }
 
